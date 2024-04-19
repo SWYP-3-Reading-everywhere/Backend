@@ -42,7 +42,6 @@ public class Review extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean isBookComplete;
 
-
     @Transient // 칼럼이 만들어지지 않는다.
     private Long likeCount;
 

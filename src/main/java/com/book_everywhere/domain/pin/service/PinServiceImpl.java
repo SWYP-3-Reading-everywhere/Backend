@@ -71,7 +71,6 @@ public class PinServiceImpl implements PinService {
                     .map(tagged -> new TagCountRespDto(
                             (String) tagged[0],
                             (Long) tagged[1])).toList();
-
             return PinWithTagCountRespDto.toDto(pin, tagCountRespDtos);
         }).toList();
     }

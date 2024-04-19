@@ -54,7 +54,7 @@ public class TaggedServiceImpl implements TaggedService {
 
     @Override
     public List<TagDto> 모든태그조회() {
-        List<Tag> tags = tagRepository.findAll();
+        List<Tag> tags = tagRepository.findAllWithCategory();
         return tags.stream().map(tag -> new TagDto(
                 tag.getContent(),
                 false,

@@ -25,5 +25,4 @@ public class Category extends BaseTimeEntity {
 
     private String name;
 
-
 }
