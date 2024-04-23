@@ -7,4 +7,5 @@ import lombok.Data;
 public class UserDto {
     private String nickname;
     private String role;
+    private Long socialId;
 }
