@@ -29,7 +29,7 @@ public class SubscribeController {
         return new CMRespDto<>(HttpStatus.OK, null, "구독 취소 성공!");
     }
 
-    @GetMapping("api/follower/{pageUserSocialId")
+    @GetMapping("api/follower/{pageUserSocialId}")
     public CMRespDto<?> followerList(@AuthenticationPrincipal CustomOAuth2User principalDetails, @PathVariable Long pageUserSocialId) {
         List<SubscribeRespDto> subscribeRespDto = subscribeService.구독자리스트(principalDetails.getSocialId(), pageUserSocialId);
         return new CMRespDto<>(HttpStatus.OK, subscribeRespDto, "구독자 리스트(follower) 반환 성공!");
