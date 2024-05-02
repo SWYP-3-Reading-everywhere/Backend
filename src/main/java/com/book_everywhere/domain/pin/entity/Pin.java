@@ -50,4 +50,7 @@ public class Pin extends BaseTimeEntity {
     @Column(nullable = false,unique = true)
     private String address;
 
+    @Column
+    private String phone;
+
 }
