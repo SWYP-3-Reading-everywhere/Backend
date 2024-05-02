@@ -4,22 +4,31 @@ import com.book_everywhere.common.exception.customs.CustomErrorCode;
 import com.book_everywhere.common.exception.customs.EntityNotFoundException;
 import com.book_everywhere.domain.auth.entity.User;
 import com.book_everywhere.domain.auth.repository.UserRepository;
+import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.entity.Pin;
 import com.book_everywhere.domain.pin.repository.PinRepository;
 import com.book_everywhere.domain.post.dto.PostReqDto;
+import com.book_everywhere.domain.post.dto.PostRespDto;
 import com.book_everywhere.domain.post.entity.Post;
+import com.book_everywhere.domain.post.entity.PostImage;
 import com.book_everywhere.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PinRepository pinRepository;
 
+    @Override
+    @Transactional
     public void 장소리뷰생성하기(PostReqDto postReqDto) {
         User user = userRepository.findBySocialId(postReqDto.getSocialId())
                 .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.USER_NOT_FOUND));
@@ -29,5 +38,23 @@ public class PostServiceImpl implements PostService{
         }
         Post post = postReqDto.toEntity(user, pin);
         postRepository.save(post);
+    }
+
+    @Override
+    public PostRespDto 장소리뷰조회(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.REVIEW_NOT_FOUND));
+        String address = post.getPin().getAddress();
+        Pin pin = pinRepository.mFindPinByAddress(address);
+        List<String> postImages = post.getPostImage().stream().map(PostImage::getImageUrl).toList();
+        PinRespDto pinRespDto = new PinRespDto(
+                pin.getTitle(),
+                pin.getPhone(),
+                pin.getPlaceId(),
+                pin.getLatitude(),
+                pin.getLongitude(),
+                pin.getAddress(),
+                pin.getUrl());
+        return new PostRespDto(post.getTitle(), post.getContent(), postImages, pinRespDto, post.isPublishing());
     }
 }

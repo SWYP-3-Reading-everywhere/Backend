@@ -3,13 +3,15 @@ package com.book_everywhere.domain.post.entity;
 import com.book_everywhere.domain.auth.entity.User;
 import com.book_everywhere.domain.pin.entity.Pin;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Entity
 public class Post {
     @Id
@@ -25,9 +27,22 @@ public class Post {
     @JoinColumn(name = "pin_id")
     private Pin pin;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "post")
+    private List<PostImage> postImage = new ArrayList<>();
+
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    private boolean isPublishing;
+
+    @Transient
+    private Long likeCount;
+
+    @Transient
+    private boolean likeState;
 }
