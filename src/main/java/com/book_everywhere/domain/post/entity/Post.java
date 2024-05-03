@@ -1,7 +1,9 @@
 package com.book_everywhere.domain.post.entity;
 
 import com.book_everywhere.domain.auth.entity.User;
+import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.entity.Pin;
+import com.book_everywhere.domain.post.dto.PostRespDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,4 +47,8 @@ public class Post {
 
     @Transient
     private boolean likeState;
+
+    public PostRespDto toRespDto(PinRespDto pinRespDto) {
+        return new PostRespDto(this.getTitle(), this.getContent(), this.getPostImage().stream().map(PostImage::getImageUrl).toList(), pinRespDto, this.isPublishing());
+    }
 }

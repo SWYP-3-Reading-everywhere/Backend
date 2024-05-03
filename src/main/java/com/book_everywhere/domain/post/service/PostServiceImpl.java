@@ -54,7 +54,18 @@ public class PostServiceImpl implements PostService{
                 pin.getLatitude(),
                 pin.getLongitude(),
                 pin.getAddress(),
+                true,
                 pin.getUrl());
         return new PostRespDto(post.getTitle(), post.getContent(), postImages, pinRespDto, post.isPublishing());
+    }
+
+    @Override
+    public List<PostRespDto> 유저의모든장소리뷰조회(Long socialId) {
+        List<Post> init = postRepository.mFindAllBySocialId(socialId);
+        return init.stream().map(post -> {
+            Pin pin = post.getPin();
+            PinRespDto pinRespDto = pin.toRespDto();
+            return post.toRespDto(pinRespDto);
+        }).toList();
     }
 }

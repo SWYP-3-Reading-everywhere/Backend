@@ -14,6 +14,7 @@ public class PinRespDto {
     private double x;
     private String address;
     //3월 2일 추가 공유지도
+    private boolean isPrivate;
     private String url;
 
     public Pin toEntity() {
