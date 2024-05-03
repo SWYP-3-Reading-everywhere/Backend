@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface PostService {
     void 장소_리뷰_생성(PostReqDto postReqDto);
+    List<PostRespDto> 모든_장소_리뷰_조회();
     PostRespDto 장소_리뷰_조회(Long id);
     List<PostRespDto> 유저의_모든_장소_리뷰_조회(Long socialId);
+
+    //#@!좋아요 계시글 조회 기능 필요
 }

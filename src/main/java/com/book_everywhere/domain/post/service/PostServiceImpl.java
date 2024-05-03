@@ -42,6 +42,12 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    public List<PostRespDto> 모든_장소_리뷰_조회() {
+        List<Post> init = postRepository.findAll();
+        return init.stream().map(post -> post.toRespDto(post.getPin().toRespDto())).toList();
+    }
+
+    @Override
     public PostRespDto 장소_리뷰_조회(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.REVIEW_NOT_FOUND));
