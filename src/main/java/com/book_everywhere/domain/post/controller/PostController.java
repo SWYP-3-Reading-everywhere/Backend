@@ -52,6 +52,14 @@ public class PostController {
         return new CMRespDto<>(HttpStatus.OK, null, "큐레이팅 저장 성공!");
     }
 
+    //해당 장소의 모든 리뷰 조회
+    @Operation(summary = "장소의 모든 큐레이팅 조회", description = "장소의 모든 큐레이팅을 조회합니다. return = List<PostRespDto>")
+    @GetMapping("/api/pin/post")
+    public CMRespDto<?> findAllPostInPin(@RequestParam("address") String address) {
+        List<PostRespDto> result = postService.장소의_모든_리뷰_조회(address);
+        return new CMRespDto<>(HttpStatus.OK, result, "해당 장소의 모든 리뷰 조회 성공!");
+    }
+
     //#@!유저의 좋아요 장소 리뷰 조회
 
     //#@!유저 장소 리뷰 수정

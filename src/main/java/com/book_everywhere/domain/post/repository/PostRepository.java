@@ -12,4 +12,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     //해당 유저의 계시글 조회
     @Query("SELECT p FROM Post p WHERE p.user.socialId = :socialId")
     List<Post> mFindAllBySocialId(@Param("socialId") Long socialId);
+
+    @Query("SELECT p FROM Post p WHERE p.pin.address = :address")
+    List<Post> mFindAllByPinAddress(@Param("address") String address);
 }

@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class PostRespDto {
+    private Long postId;
     private String title;
     private String content;
     private List<String> post_imageUrl;

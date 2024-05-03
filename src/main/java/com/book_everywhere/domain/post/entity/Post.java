@@ -49,6 +49,6 @@ public class Post {
     private boolean likeState;
 
     public PostRespDto toRespDto(PinRespDto pinRespDto) {
-        return new PostRespDto(this.getTitle(), this.getContent(), this.getPostImage().stream().map(PostImage::getImageUrl).toList(), pinRespDto, this.isPublishing());
+        return new PostRespDto(this.getId(), this.getTitle(), this.getContent(), this.getPostImage().stream().map(PostImage::getImageUrl).toList(), pinRespDto, this.isPublishing());
     }
 }

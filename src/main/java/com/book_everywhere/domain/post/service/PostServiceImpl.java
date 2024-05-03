@@ -53,17 +53,8 @@ public class PostServiceImpl implements PostService{
                 .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.REVIEW_NOT_FOUND));
         String address = post.getPin().getAddress();
         Pin pin = pinRepository.mFindPinByAddress(address);
-        List<String> postImages = post.getPostImage().stream().map(PostImage::getImageUrl).toList();
-        PinRespDto pinRespDto = new PinRespDto(
-                pin.getTitle(),
-                pin.getPhone(),
-                pin.getPlaceId(),
-                pin.getLatitude(),
-                pin.getLongitude(),
-                pin.getAddress(),
-                true,
-                pin.getUrl());
-        return new PostRespDto(post.getTitle(), post.getContent(), postImages, pinRespDto, post.isPublishing());
+        PinRespDto pinRespDto = pin.toRespDto();
+        return post.toRespDto(pinRespDto);
     }
 
     @Override
@@ -74,5 +65,11 @@ public class PostServiceImpl implements PostService{
             PinRespDto pinRespDto = pin.toRespDto();
             return post.toRespDto(pinRespDto);
         }).toList();
+    }
+
+    @Override
+    public List<PostRespDto> 장소의_모든_리뷰_조회(String address) {
+        List<Post> init = postRepository.mFindAllByPinAddress(address);
+        return init.stream().map(post -> post.toRespDto(post.getPin().toRespDto())).toList();
     }
 }
