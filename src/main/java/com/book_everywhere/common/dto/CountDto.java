@@ -1,4 +1,4 @@
-package com.book_everywhere.domain.post.dto;
+package com.book_everywhere.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

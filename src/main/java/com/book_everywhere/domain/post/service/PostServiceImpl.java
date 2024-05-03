@@ -26,22 +26,23 @@ public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PinRepository pinRepository;
+    //#@!S3 연동하는 코드가 필요합니다. postImageRepository 부분이 필요합니다
 
     @Override
     @Transactional
-    public void 장소리뷰생성하기(PostReqDto postReqDto) {
+    public void 장소_리뷰_생성(PostReqDto postReqDto) {
         User user = userRepository.findBySocialId(postReqDto.getSocialId())
                 .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.USER_NOT_FOUND));
         Pin pin = pinRepository.mFindPinByAddress(postReqDto.getPinRespDto().getAddress());
         if(pin == null) {
             throw new EntityNotFoundException(CustomErrorCode.PIN_NOT_FOUND);
         }
-        Post post = postReqDto.toEntity(user, pin);
+        Post post = postReqDto.toEntity(user, pin); //#@! 이미지 관련 코드가 필요합니다
         postRepository.save(post);
     }
 
     @Override
-    public PostRespDto 장소리뷰조회(Long postId) {
+    public PostRespDto 장소_리뷰_조회(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.REVIEW_NOT_FOUND));
         String address = post.getPin().getAddress();
@@ -60,7 +61,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostRespDto> 유저의모든장소리뷰조회(Long socialId) {
+    public List<PostRespDto> 유저의_모든_장소_리뷰_조회(Long socialId) {
         List<Post> init = postRepository.mFindAllBySocialId(socialId);
         return init.stream().map(post -> {
             Pin pin = post.getPin();
