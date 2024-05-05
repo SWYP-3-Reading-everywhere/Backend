@@ -2,6 +2,7 @@ package com.book_everywhere.domain.post.controller;
 
 import com.book_everywhere.common.dto.CMRespDto;
 import com.book_everywhere.common.dto.CountDto;
+import com.book_everywhere.domain.post.facade.PostFacade;
 import com.book_everywhere.domain.post.dto.PostReqDto;
 import com.book_everywhere.domain.post.dto.PostRespDto;
 import com.book_everywhere.domain.post.service.PostService;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostFacade postFacade;
 
     //전체 장소 리뷰 조회
     @Operation(summary = "모든 큐레이팅 조회", description = "모든 큐레이팅 조회 return = List<PostRespDto>")
@@ -48,7 +50,7 @@ public class PostController {
     @Operation(summary = "큐레이팅 생성", description = "새 큐레이팅을 저장합니다.")
     @PostMapping("/api/post")
     public CMRespDto<?> savePost(@Valid @RequestBody PostReqDto postReqDto) {
-        postService.장소_리뷰_생성(postReqDto); // 이미지 관련 부분 구현이 필요합니다!
+        postFacade.장소_리뷰_등록(postReqDto); //#@! 이미지 관련 부분 및 태그 부분 구현이 필요합니다.
         return new CMRespDto<>(HttpStatus.OK, null, "큐레이팅 저장 성공!");
     }
 

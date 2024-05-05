@@ -1,14 +1,13 @@
 package com.book_everywhere.domain.pin.service;
 
-import com.book_everywhere.domain.book.dto.BookRespDto;
-import com.book_everywhere.domain.book.dto.BookRespDtoBuilder;
 import com.book_everywhere.domain.pin.dto.PinRespDtoTestBuilder;
-import com.book_everywhere.domain.review.dto.ReviewRespDtoTestBuilder;
+import com.book_everywhere.domain.post.dto.PostReqDto;
+import com.book_everywhere.domain.post.dto.PostReqDtoTestBuilder;
 import com.book_everywhere.domain.pin.dto.PinDto;
 import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.entity.Pin;
 import com.book_everywhere.domain.pin.repository.PinRepository;
-import com.book_everywhere.domain.review.dto.ReviewRespDto;
+import com.book_everywhere.domain.review.dto.PostRespDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +51,12 @@ public class PinServiceTest {
     @Test
     public void 핀생성_새핀생성() {
         // given
-        BookRespDto bookRespDto = BookRespDtoBuilder.createDefault();
         PinRespDto pinRespDto = PinRespDtoTestBuilder.createDefault();
-        ReviewRespDto reviewRespDto = ReviewRespDtoTestBuilder.createDefault(pinRespDto, bookRespDto);
+        PostReqDto postReqDto = PostReqDtoTestBuilder.createDefault(pinRespDto);
         when(pinRepository.mFindPinByAddress(anyString())).thenReturn(null); // 아직 핀이 없는 주소라고 가정
 
         // when
-        pinServiceImpl.핀생성(reviewRespDto);
+        pinServiceImpl.핀생성포스트(postReqDto);
 
         // then
         verify(pinRepository).save(any(Pin.class));
@@ -68,13 +66,12 @@ public class PinServiceTest {
     @Test
     public void 핀생성_기존핀재사용() {
         // given
-        BookRespDto bookRespDto = BookRespDtoBuilder.createDefault();
         PinRespDto pinRespDto = PinRespDtoTestBuilder.createDefault();
-        ReviewRespDto reviewRespDto = ReviewRespDtoTestBuilder.createDefault(pinRespDto, bookRespDto);
+        PostReqDto postRespDto = PostReqDtoTestBuilder.createDefault(pinRespDto);
         when(pinRepository.mFindPinByAddress(anyString())).thenReturn(pinRespDto.toEntity());
 
         // when
-        pinServiceImpl.핀생성(reviewRespDto);
+        pinServiceImpl.핀생성포스트(postRespDto);
 
         // then
         verify(pinRepository, never()).save(any(Pin.class));

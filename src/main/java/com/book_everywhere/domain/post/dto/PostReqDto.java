@@ -32,6 +32,8 @@ public class PostReqDto {
     @NotNull(message = "발행 여부를 정확히해주세요.")
     private boolean isPublishing;
 
+    //태그 생성을 위한 dto필요
+
     public Post toEntity(User user, Pin pin) {
         return Post.builder()
                 .title(title)
