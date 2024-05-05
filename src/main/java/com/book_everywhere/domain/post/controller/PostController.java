@@ -39,7 +39,7 @@ public class PostController {
 
     //유저 장소 리뷰 조회
     @Operation(summary = "유저의 모든 큐레이팅 조회", description = "유저의 모든 큐레이팅을 개수와 함께 조회합니다. return = CountDto<List<PostRespDto>>")
-    @GetMapping("/api/post/{socialId}")
+    @GetMapping("/api/user/post/{socialId}")
     public CMRespDto<?> findUserPosts(@PathVariable Long socialId) {
         List<PostRespDto> postRespDtos = postService.유저의_모든_장소_리뷰_조회(socialId);
         CountDto<?> result = new CountDto<>(postRespDtos);
