@@ -1,15 +1,16 @@
 package com.book_everywhere.domain.pin.service;
 
-import com.book_everywhere.domain.pin.entity.Pin;
-import com.book_everywhere.domain.pin.repository.PinRepository;
-import com.book_everywhere.domain.tag.repository.TaggedRepository;
+import com.book_everywhere.common.exception.customs.CustomErrorCode;
+import com.book_everywhere.common.exception.customs.EntityNotFoundException;
 import com.book_everywhere.domain.pin.dto.PinDto;
 import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.dto.PinWithTagCountRespDto;
+import com.book_everywhere.domain.pin.entity.Pin;
+import com.book_everywhere.domain.pin.repository.PinRepository;
+import com.book_everywhere.domain.post.dto.PostReqDto;
 import com.book_everywhere.domain.review.dto.ReviewRespDto;
 import com.book_everywhere.domain.tag.dto.TagCountRespDto;
-import com.book_everywhere.common.exception.customs.CustomErrorCode;
-import com.book_everywhere.common.exception.customs.EntityNotFoundException;
+import com.book_everywhere.domain.tag.repository.TaggedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,17 @@ public class PinServiceImpl implements PinService {
                 .toList();
     }
     @Transactional
-    public void 핀생성(ReviewRespDto reviewRespDto) {
+    public void 핀생성포스트(PostReqDto postReqDto) {
+        PinRespDto pinRespDto = postReqDto.getPinRespDto();
+        Pin pined = pinRepository.mFindPinByAddress(postReqDto.getPinRespDto().getAddress());
+        if (pined == null) {
+            Pin pin = pinRespDto.toEntity();
+            pinRepository.save(pin);
+        }
+    }
+
+    @Override
+    public void 핀생성리뷰(ReviewRespDto reviewRespDto) {
         PinRespDto pinRespDto = reviewRespDto.getPinRespDto();
         Pin pined = pinRepository.mFindPinByAddress(reviewRespDto.getPinRespDto().getAddress());
         if (pined == null) {

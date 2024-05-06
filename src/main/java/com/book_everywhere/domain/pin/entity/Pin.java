@@ -1,6 +1,7 @@
 package com.book_everywhere.domain.pin.entity;
 
 import com.book_everywhere.common.entity.BaseTimeEntity;
+import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.review.entity.Review;
 import com.book_everywhere.domain.tag.entity.Tagged;
 import jakarta.persistence.*;
@@ -50,4 +51,10 @@ public class Pin extends BaseTimeEntity {
     @Column(nullable = false,unique = true)
     private String address;
 
+    @Column
+    private String phone;
+
+    public PinRespDto toRespDto() {
+        return new PinRespDto(this.title, this.phone, this.getPlaceId(), this.getLongitude(), this.getLatitude(), this.getAddress(), false, this.getUrl());
+    }
 }

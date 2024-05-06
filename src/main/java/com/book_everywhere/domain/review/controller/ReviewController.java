@@ -45,8 +45,8 @@ public class ReviewController {
     })
     public CMRespDto<?> addReview(@RequestBody ReviewRespDto reviewRespDto) {
         reviewService.등록또는수정전예외처리(reviewRespDto);
-        pinService.핀생성(reviewRespDto);
         bookService.책생성(reviewRespDto);
+        pinService.핀생성리뷰(reviewRespDto);
         taggedService.태그등록(reviewRespDto);
         visitService.독후감쓰기전방문등록또는수정(reviewRespDto);
         reviewService.독후감생성(reviewRespDto);
@@ -91,7 +91,7 @@ public class ReviewController {
                                      @RequestParam String prevAddress,
                                      @RequestBody ReviewRespDto reviewRespDto) {
         reviewService.등록또는수정전예외처리(reviewRespDto);
-        pinService.핀생성(reviewRespDto);
+        pinService.핀생성리뷰(reviewRespDto);
         bookService.책생성(reviewRespDto);
         taggedService.태그삭제(reviewRespDto.getPinRespDto().getAddress(), reviewRespDto.getSocialId());
         taggedService.태그등록(reviewRespDto);

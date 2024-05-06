@@ -1,21 +1,21 @@
 package com.book_everywhere.domain.review.service;
 
+import com.book_everywhere.common.exception.customs.CustomErrorCode;
+import com.book_everywhere.common.exception.customs.EntityNotFoundException;
+import com.book_everywhere.common.exception.customs.PropertyBadRequestException;
+import com.book_everywhere.domain.auth.entity.User;
+import com.book_everywhere.domain.auth.repository.UserRepository;
 import com.book_everywhere.domain.book.entity.Book;
 import com.book_everywhere.domain.book.repository.BookRepository;
 import com.book_everywhere.domain.likes.repository.LikesRepository;
 import com.book_everywhere.domain.likes.service.LikesCachingService;
 import com.book_everywhere.domain.pin.entity.Pin;
 import com.book_everywhere.domain.pin.repository.PinRepository;
+import com.book_everywhere.domain.review.dto.ReviewDto;
+import com.book_everywhere.domain.review.dto.ReviewRespDto;
 import com.book_everywhere.domain.review.entity.Review;
 import com.book_everywhere.domain.review.repository.ReviewRepository;
-import com.book_everywhere.domain.auth.entity.User;
-import com.book_everywhere.domain.auth.repository.UserRepository;
 import com.book_everywhere.domain.tag.service.TaggedService;
-import com.book_everywhere.common.exception.customs.CustomErrorCode;
-import com.book_everywhere.common.exception.customs.EntityNotFoundException;
-import com.book_everywhere.domain.review.dto.ReviewRespDto;
-import com.book_everywhere.common.exception.customs.PropertyBadRequestException;
-import com.book_everywhere.domain.review.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -153,13 +153,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Transactional
-    public void 독후감수정(Long reviewId, ReviewRespDto reviewRespDto) {
+    public void 독후감수정(Long reviewId, ReviewRespDto postRespDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.REVIEW_NOT_FOUND));
-        Book existBook = bookRepository.mFindBookIsbn(reviewRespDto.getBookRespDto().getIsbn());
-        Pin existPin = pinRepository.mFindPinByAddress(reviewRespDto.getPinRespDto().getAddress());
-        User user = userRepository.findBySocialId(reviewRespDto.getSocialId()).orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.USER_NOT_FOUND));
-        review.changeReview(reviewRespDto.getTitle(), reviewRespDto.getContent(), reviewRespDto.isPrivate(), reviewRespDto.getBookRespDto().isComplete(), reviewRespDto.getWriter());
+        Book existBook = bookRepository.mFindBookIsbn(postRespDto.getBookRespDto().getIsbn());
+        Pin existPin = pinRepository.mFindPinByAddress(postRespDto.getPinRespDto().getAddress());
+        User user = userRepository.findBySocialId(postRespDto.getSocialId()).orElseThrow(() -> new EntityNotFoundException(CustomErrorCode.USER_NOT_FOUND));
+        review.changeReview(postRespDto.getTitle(), postRespDto.getContent(), postRespDto.isPrivate(), postRespDto.getBookRespDto().isComplete(), postRespDto.getWriter());
         review.setUser(user);
         review.setBook(existBook);
         review.setPin(existPin);
@@ -208,23 +208,23 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.delete(review);
     }
 
-    public void 등록또는수정전예외처리(ReviewRespDto reviewRespDto) {
-        if (reviewRespDto.getTitle() == null || reviewRespDto.getTitle().isEmpty()) {
+    public void 등록또는수정전예외처리(ReviewRespDto postRespDto) {
+        if (postRespDto.getTitle() == null || postRespDto.getTitle().isEmpty()) {
             throw new PropertyBadRequestException(CustomErrorCode.TITLE_IS_NOT_BLANK);
         }
-        if (reviewRespDto.getTitle().length() > 20) {
+        if (postRespDto.getTitle().length() > 20) {
             throw new PropertyBadRequestException(CustomErrorCode.TITLE_IS_NOT_OVER_20);
         }
-        if (reviewRespDto.getContent() == null || reviewRespDto.getContent().isEmpty()) {
+        if (postRespDto.getContent() == null || postRespDto.getContent().isEmpty()) {
             throw new PropertyBadRequestException(CustomErrorCode.CONTENT_IS_NOT_BLANK);
         }
-        if (reviewRespDto.getContent().length() > 1500) {
+        if (postRespDto.getContent().length() > 1500) {
             throw new PropertyBadRequestException(CustomErrorCode.CONTENT_IS_NOT_OVER_1500);
         }
-        if (reviewRespDto.getBookRespDto() == null) {
+        if (postRespDto.getBookRespDto() == null) {
             throw new PropertyBadRequestException(CustomErrorCode.BOOK_IS_NOT_NULL);
         }
-        if (reviewRespDto.getPinRespDto().getAddress() == null || reviewRespDto.getPinRespDto().getAddress().isEmpty()) {
+        if (postRespDto.getPinRespDto().getAddress() == null || postRespDto.getPinRespDto().getAddress().isEmpty()) {
             throw new PropertyBadRequestException(CustomErrorCode.ADDRESS_IS_NOT_NULL);
         }
     }

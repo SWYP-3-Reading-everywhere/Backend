@@ -48,6 +48,7 @@ public class DataService {
             Visit visit = visitRepository.mFindByUserAndPin(review.getUser().getId(), review.getPin().getId());
             PinRespDto pinRespDto = new PinRespDto(
                     pin.getTitle(),
+                    pin.getPhone(),
                     pin.getPlaceId(),
                     pin.getLatitude(),
                     pin.getLongitude(),
@@ -100,6 +101,7 @@ public class DataService {
             Visit visit = visitRepository.mFindByUserAndPin(review.getUser().getId(), review.getPin().getId());
             PinRespDto pinRespDto = new PinRespDto(
                     pin.getTitle(),
+                    pin.getPhone(),
                     pin.getPlaceId(),
                     pin.getLatitude(),
                     pin.getLongitude(),

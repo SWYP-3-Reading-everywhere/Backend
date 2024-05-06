@@ -10,7 +10,7 @@ import com.book_everywhere.domain.pin.dto.PinRespDtoTestBuilder;
 import com.book_everywhere.domain.review.dto.ReviewRespDtoTestBuilder;
 import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.repository.PinRepository;
-import com.book_everywhere.domain.review.dto.ReviewRespDto;
+import com.book_everywhere.domain.review.dto.PostRespDto;
 import com.book_everywhere.domain.review.entity.Review;
 import com.book_everywhere.domain.review.repository.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,14 +54,14 @@ public class ReviewServiceTest {
         User fakeUser = UserTestBuilder.createDefault();
         BookRespDto bookRespDto = BookRespDtoBuilder.createDefault();
         PinRespDto pinRespDto = PinRespDtoTestBuilder.createDefault();
-        ReviewRespDto reviewRespDto = ReviewRespDtoTestBuilder.createDefault(pinRespDto, bookRespDto);
+        PostRespDto postRespDto = ReviewRespDtoTestBuilder.createDefault(pinRespDto, bookRespDto);
 
         userRepository.save(fakeUser);
         bookRepository.save(bookRespDto.toEntity());
         pinRepository.save(pinRespDto.toEntity());
 
         // when: 독후감 생성 로직 실행
-        reviewServiceImpl.독후감생성(reviewRespDto);
+        reviewServiceImpl.독후감생성(postRespDto);
 
         // then: 데이터가 예상대로 저장되었는지 검증
         assertThat(reviewRepository.mFindReviewsByUser(fakeUser.getSocialId())).isNotEmpty();
@@ -83,14 +83,14 @@ public class ReviewServiceTest {
         User fakeUser = UserTestBuilder.createDefault();
         BookRespDto bookRespDto = BookRespDtoBuilder.createDefault();
         PinRespDto pinRespDto = PinRespDtoTestBuilder.createDefault();
-        ReviewRespDto reviewRespDto = ReviewRespDtoTestBuilder.createDefault(pinRespDto, bookRespDto);
+        PostRespDto postRespDto = ReviewRespDtoTestBuilder.createDefault(pinRespDto, bookRespDto);
         
         // 없으면깨짐
         userRepository.save(fakeUser);
         bookRepository.save(bookRespDto.toEntity());
         pinRepository.save(pinRespDto.toEntity());
 
-        Long reviewId = reviewServiceImpl.독후감생성(reviewRespDto);
+        Long reviewId = reviewServiceImpl.독후감생성(postRespDto);
         assertThat(reviewRepository.mFindReviewsByUser(fakeUser.getSocialId())).isNotEmpty();
         // when: 저장된 리뷰 삭제 로직 실행
         reviewServiceImpl.독후감삭제(reviewId);

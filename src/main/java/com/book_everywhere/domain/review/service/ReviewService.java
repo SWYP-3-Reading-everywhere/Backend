@@ -14,7 +14,7 @@ public interface ReviewService {
 
     List<ReviewDto> 모든공유독후감조회(Long socialId);
 
-    void 등록또는수정전예외처리(ReviewRespDto reviewRespDto);
+    void 등록또는수정전예외처리(ReviewRespDto postRespDto);
 
     ReviewDto 단일독후감조회(Long socialId, Long reviewId);
 

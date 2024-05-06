@@ -7,6 +7,7 @@ import com.book_everywhere.domain.auth.repository.UserRepository;
 import com.book_everywhere.domain.mark.dto.BookmarkDto;
 import com.book_everywhere.domain.mark.entity.Bookmark;
 import com.book_everywhere.domain.mark.repository.BookmarkRepository;
+import com.book_everywhere.domain.pin.dto.PinRespDto;
 import com.book_everywhere.domain.pin.entity.Pin;
 import com.book_everywhere.domain.pin.repository.PinRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +48,6 @@ public class BookmarkServiceImpl implements BookmarkService{
     @Override
     public List<BookmarkDto> 유저_북마크_조회(Long socialId) {
         List<Bookmark> init = bookmarkRepository.findAllBySocialId(socialId);
-        return init.stream().map(bookmark ->
-                new BookmarkDto(
-                        bookmark.getId(),
-                        bookmark.getPin().getId())
-        ).toList();
+        return init.stream().map(bookmark -> new BookmarkDto(bookmark.getPin().toRespDto())).toList();
     }
 }

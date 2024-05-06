@@ -6,6 +6,7 @@ public class PinRespDtoTestBuilder {
     public static PinRespDto createDefault() {
         return new PinRespDto(
                 "Default Name",
+                "123-456-789",
                 123.456,
                 37.5665,
                 126.9780,
